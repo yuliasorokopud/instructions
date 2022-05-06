@@ -15,8 +15,11 @@
 		2A534CC928230F6300A7AAA5 /* InstructionsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A534CC828230F6300A7AAA5 /* InstructionsUITests.swift */; };
 		2A534CCB28230F6300A7AAA5 /* InstructionsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A534CCA28230F6300A7AAA5 /* InstructionsUITestsLaunchTests.swift */; };
 		2A534CD828230F8400A7AAA5 /* MyScene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 2A534CD728230F8400A7AAA5 /* MyScene.rcproject */; };
-		2A534CDC2823190D00A7AAA5 /* CustomARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A534CDB2823190D00A7AAA5 /* CustomARView.swift */; };
+		2A534CDC2823190D00A7AAA5 /* ARViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A534CDB2823190D00A7AAA5 /* ARViewManager.swift */; };
 		2AC44B63282449E500CEC213 /* RealityComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B62282449E500CEC213 /* RealityComposerView.swift */; };
+		2AC44B6528246A3100CEC213 /* ARViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6428246A3100CEC213 /* ARViewModel.swift */; };
+		2AC44B6B282520A800CEC213 /* TopMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6A282520A800CEC213 /* TopMenu.swift */; };
+		2AC44B6D282520D800CEC213 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6C282520D800CEC213 /* ButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,8 +51,11 @@
 		2A534CC828230F6300A7AAA5 /* InstructionsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsUITests.swift; sourceTree = "<group>"; };
 		2A534CCA28230F6300A7AAA5 /* InstructionsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2A534CD728230F8400A7AAA5 /* MyScene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = MyScene.rcproject; sourceTree = "<group>"; };
-		2A534CDB2823190D00A7AAA5 /* CustomARView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomARView.swift; sourceTree = "<group>"; };
+		2A534CDB2823190D00A7AAA5 /* ARViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARViewManager.swift; sourceTree = "<group>"; };
 		2AC44B62282449E500CEC213 /* RealityComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityComposerView.swift; sourceTree = "<group>"; };
+		2AC44B6428246A3100CEC213 /* ARViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewModel.swift; sourceTree = "<group>"; };
+		2AC44B6A282520A800CEC213 /* TopMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopMenu.swift; sourceTree = "<group>"; };
+		2AC44B6C282520D800CEC213 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,10 +106,11 @@
 		2A534CAC28230F6100A7AAA5 /* Instructions */ = {
 			isa = PBXGroup;
 			children = (
+				2AC44B672825206F00CEC213 /* ViewModels */,
+				2AC44B662825206800CEC213 /* Views */,
 				2A534CAD28230F6100A7AAA5 /* InstructionsApp.swift */,
 				2AC44B62282449E500CEC213 /* RealityComposerView.swift */,
-				2A534CDB2823190D00A7AAA5 /* CustomARView.swift */,
-				2A534CAF28230F6100A7AAA5 /* ContentView.swift */,
+				2A534CDB2823190D00A7AAA5 /* ARViewManager.swift */,
 				2A534CB128230F6300A7AAA5 /* Assets.xcassets */,
 				2A534CB328230F6300A7AAA5 /* Preview Content */,
 				2A534CD728230F8400A7AAA5 /* MyScene.rcproject */,
@@ -134,6 +141,24 @@
 				2A534CCA28230F6300A7AAA5 /* InstructionsUITestsLaunchTests.swift */,
 			);
 			path = InstructionsUITests;
+			sourceTree = "<group>";
+		};
+		2AC44B662825206800CEC213 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2A534CAF28230F6100A7AAA5 /* ContentView.swift */,
+				2AC44B6A282520A800CEC213 /* TopMenu.swift */,
+				2AC44B6C282520D800CEC213 /* ButtonView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2AC44B672825206F00CEC213 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2AC44B6428246A3100CEC213 /* ARViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,8 +292,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AC44B63282449E500CEC213 /* RealityComposerView.swift in Sources */,
-				2A534CDC2823190D00A7AAA5 /* CustomARView.swift in Sources */,
+				2A534CDC2823190D00A7AAA5 /* ARViewManager.swift in Sources */,
+				2AC44B6D282520D800CEC213 /* ButtonView.swift in Sources */,
+				2AC44B6B282520A800CEC213 /* TopMenu.swift in Sources */,
 				2A534CD828230F8400A7AAA5 /* MyScene.rcproject in Sources */,
+				2AC44B6528246A3100CEC213 /* ARViewModel.swift in Sources */,
 				2A534CB028230F6100A7AAA5 /* ContentView.swift in Sources */,
 				2A534CAE28230F6100A7AAA5 /* InstructionsApp.swift in Sources */,
 			);

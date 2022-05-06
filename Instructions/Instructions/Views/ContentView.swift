@@ -10,16 +10,26 @@ import ARKit
 import SwiftUI
 
 struct ContentView: View {
+    @State var editingMode: Bool = false
+    @ObservedObject var arViewModel = ARViewModel()
     var body: some View {
-        
-        return ARViewContainer().edgesIgnoringSafeArea(.all)
+        ZStack {
+            ARViewContainer(arView: arViewModel.arView).edgesIgnoringSafeArea(.all)
+            VStack {
+                TopMenu(editingMode: $arViewModel.editingMode)
+                Spacer()
+                ButtonView(imageName: "cube.fill") {
+                    arViewModel.addNewEntity()
+                }
+            }
+        }
     }
 }
 
 struct ARViewContainer: UIViewRepresentable {
+    let arView: ARView
 
     func makeUIView(context: Context) -> ARView {
-        let arView = CustomARView(frame: .zero)
         return arView
     }
 
