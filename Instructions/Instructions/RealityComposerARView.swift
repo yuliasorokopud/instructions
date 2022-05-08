@@ -1,16 +1,8 @@
-//
-//  RealityComposerView.swift
-//  Instructions
-//
-//  Created by Yulia Sorokopud on 05.05.2022.
-//
-
 import ARKit
 import RealityKit
 import SwiftUI
 
-class RealityComposerView: ARView {
-
+class RealityComposerARView: ARView {
     let boxAnchor = try! MyScene.loadBox()
     var imageAnchorToEntity: [ARImageAnchor: AnchorEntity] = [:]
 
@@ -29,7 +21,7 @@ class RealityComposerView: ARView {
     }
 }
 
-extension RealityComposerView: ARSessionDelegate {
+extension RealityComposerARView: ARSessionDelegate {
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         anchors.compactMap { $0 as? ARImageAnchor }.forEach {
             let anchorEntity = AnchorEntity()

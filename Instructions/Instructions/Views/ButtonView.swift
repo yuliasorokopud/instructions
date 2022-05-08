@@ -1,10 +1,3 @@
-//
-//  ButtonView.swift
-//  Instructions
-//
-//  Created by Yulia Sorokopud on 06.05.2022.
-//
-
 import SwiftUI
 
 struct ButtonView: View {
@@ -12,7 +5,7 @@ struct ButtonView: View {
     let buttonAction: () -> Void
 
     var body: some View {
-        ZStack{
+        ZStack {
             Color.black.opacity(0.25)
             Button(action: {
                 buttonAction()
@@ -25,7 +18,6 @@ struct ButtonView: View {
         }
         .frame(width: 50, height: 50)
         .cornerRadius(8)
-
     }
 }
 
@@ -37,7 +29,7 @@ struct ToggleButtonView: View {
     let buttonAction: () -> Void
 
     var body: some View {
-        ZStack{
+        ZStack {
             Color.black.opacity(0.25)
             Button(action: {
                 buttonAction()
@@ -50,6 +42,5 @@ struct ToggleButtonView: View {
         }
         .frame(width: 50, height: 50)
         .cornerRadius(8)
-
     }
 }

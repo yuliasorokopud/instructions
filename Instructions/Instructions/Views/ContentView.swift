@@ -1,16 +1,8 @@
-//
-//  ContentView.swift
-//  Instructions
-//
-//  Created by Yulia Sorokopud on 04.05.2022.
-//
-
-import RealityKit
 import ARKit
+import RealityKit
 import SwiftUI
 
 struct ContentView: View {
-    @State var editingMode: Bool = false
     @ObservedObject var arViewModel = ARViewModel()
     var body: some View {
         ZStack {
@@ -18,10 +10,13 @@ struct ContentView: View {
             VStack {
                 TopMenu(editingMode: $arViewModel.editingMode)
                 Spacer()
-                ButtonView(imageName: "cube.fill") {
-                    arViewModel.addNewEntity()
+                if arViewModel.editingMode {
+                    ButtonView(imageName: "cube.fill") {
+                        arViewModel.addMarker()
+                    }
                 }
             }
+            MarkerOverlayView(position: $arViewModel.imageAnchorScreenPosition)
         }
     }
 }

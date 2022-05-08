@@ -1,16 +1,10 @@
-//
-//  Menu.swift
-//  Instructions
-//
-//  Created by Yulia Sorokopud on 06.05.2022.
-//
-
 import SwiftUI
 
 struct TopMenu: View {
     @Binding var editingMode: Bool
+    
     var body: some View {
-            HStack{
+            HStack {
                 Spacer()
                 ToggleButtonView(
                     isEnable: $editingMode,
