@@ -19,6 +19,7 @@ class ARViewModel: NSObject, ObservableObject {
     public func addMarker() {
         guard editingMode else { return }
         arView.addMarker()
+        editingMode = false
     }
 }
 
@@ -37,7 +38,7 @@ extension ARViewModel: ARSessionDelegate {
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         anchors.compactMap { $0 as? ARImageAnchor }.forEach {
             arView.updateEntityForImageAnchor($0)
-
+            self.imageAnchor = $0
         }
     }
 

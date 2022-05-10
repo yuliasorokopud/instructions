@@ -21,6 +21,7 @@
 		2AC44B6528246A3100CEC213 /* ARViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6428246A3100CEC213 /* ARViewModel.swift */; };
 		2AC44B6B282520A800CEC213 /* TopMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6A282520A800CEC213 /* TopMenu.swift */; };
 		2AC44B6D282520D800CEC213 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6C282520D800CEC213 /* ButtonView.swift */; };
+		2ACA300E28294EB800D4DFFD /* InstructionCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACA300D28294EB800D4DFFD /* InstructionCreationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		2AC44B6428246A3100CEC213 /* ARViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewModel.swift; sourceTree = "<group>"; };
 		2AC44B6A282520A800CEC213 /* TopMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopMenu.swift; sourceTree = "<group>"; };
 		2AC44B6C282520D800CEC213 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		2ACA300D28294EB800D4DFFD /* InstructionCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionCreationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 				2AC44B6A282520A800CEC213 /* TopMenu.swift */,
 				2AC44B6C282520D800CEC213 /* ButtonView.swift */,
 				2A0F5C9D2826AE2F00428E0C /* MarkerOverlayView.swift */,
+				2ACA300D28294EB800D4DFFD /* InstructionCreationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				2A0F5C9E2826AE2F00428E0C /* MarkerOverlayView.swift in Sources */,
 				2AC44B6528246A3100CEC213 /* ARViewModel.swift in Sources */,
 				2A534CB028230F6100A7AAA5 /* ContentView.swift in Sources */,
+				2ACA300E28294EB800D4DFFD /* InstructionCreationView.swift in Sources */,
 				2A534CAE28230F6100A7AAA5 /* InstructionsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

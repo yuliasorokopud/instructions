@@ -5,7 +5,7 @@ import SwiftUI
 class ARViewManager: ARView {
     /// stores as children all entities added to the scene
     private var rootEntity = AnchorEntity()
-    private var imageAnchorToEntity: [ARAnchor: AnchorEntity] = [:]
+    var imageAnchorToEntity: [ARAnchor: AnchorEntity] = [:]
 
     internal required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
@@ -34,7 +34,7 @@ class ARViewManager: ARView {
             return nil
         }
 
-        return CGPoint(x: abs(point.x), y: abs(point.y))
+        return point
     }
 
     public func updateEntityForImageAnchor(_ anchor: ARImageAnchor) {

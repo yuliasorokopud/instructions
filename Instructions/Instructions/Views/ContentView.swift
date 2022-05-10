@@ -4,6 +4,10 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var arViewModel = ARViewModel()
+
+    @State var title: String = ""
+    @State var description: String = ""
+
     var body: some View {
         ZStack {
             ARViewContainer(arView: arViewModel.arView).edgesIgnoringSafeArea(.all)
@@ -16,7 +20,14 @@ struct ContentView: View {
                     }
                 }
             }
+            
             MarkerOverlayView(position: $arViewModel.imageAnchorScreenPosition)
+
+            InstructionCreationView(title: $title,
+                                    description: $description,
+                                    action: { arViewModel.editingMode.toggle() }
+            )
+            .hidden(arViewModel.editingMode)
         }
     }
 }
@@ -34,5 +45,12 @@ struct ARViewContainer: UIViewRepresentable {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+
+extension View {
+    func hidden(_ isHidden: Bool) -> some View{
+        opacity(isHidden ? 0 : 1)
     }
 }
