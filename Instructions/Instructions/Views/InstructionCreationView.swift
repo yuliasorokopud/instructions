@@ -1,10 +1,3 @@
-//
-//  InstructionCreationView.swift
-//  Instructions
-//
-//  Created by Yulia Sorokopud on 09.05.2022.
-//
-
 import SwiftUI
 
 struct InstructionCreationView: View {

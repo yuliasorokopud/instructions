@@ -6,7 +6,7 @@ struct TopMenu: View {
     var body: some View {
             HStack {
                 Spacer()
-                ToggleButtonView(
+                EditButtonView(
                     isEnable: $editingMode,
                     imageNameTrue: "camera.metering.center.weighted",
                     imageNameFalse: "camera.metering.center.weighted.average"

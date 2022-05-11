@@ -20,8 +20,11 @@ struct ContentView: View {
                     }
                 }
             }
-            
-            MarkerOverlayView(position: $arViewModel.imageAnchorScreenPosition)
+
+            ForEach(arViewModel.instructions) {
+                MarkerOverlayView(position: $0.markerViewPosition,
+                                  title: $0.title)
+            }
 
             InstructionCreationView(title: $title,
                                     description: $description,

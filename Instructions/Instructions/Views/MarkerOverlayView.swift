@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct MarkerOverlayView: View {
-    @Binding var position: CGPoint?
+    var position: CGPoint?
+    var title: String
 
     var body: some View {
         if let position = position {
@@ -17,7 +18,7 @@ struct MarkerOverlayView: View {
             .position(position)
             .padding()
             .onTapGesture {
-                print("InstructionView tapped")
+                print("InstructionView tapped with number: \(title)")
             }
         }
     }

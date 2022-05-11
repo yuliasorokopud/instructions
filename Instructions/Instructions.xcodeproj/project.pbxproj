@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2A0F5C9E2826AE2F00428E0C /* MarkerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0F5C9D2826AE2F00428E0C /* MarkerOverlayView.swift */; };
+		2A4C0842282AF05000878616 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A4C0840282AF05000878616 /* Instruction.swift */; };
 		2A534CAE28230F6100A7AAA5 /* InstructionsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A534CAD28230F6100A7AAA5 /* InstructionsApp.swift */; };
 		2A534CB028230F6100A7AAA5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A534CAF28230F6100A7AAA5 /* ContentView.swift */; };
 		2A534CB228230F6300A7AAA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A534CB128230F6300A7AAA5 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		2A0F5C9D2826AE2F00428E0C /* MarkerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerOverlayView.swift; sourceTree = "<group>"; };
+		2A4C0840282AF05000878616 /* Instruction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		2A534CAA28230F6100A7AAA5 /* Instructions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instructions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A534CAD28230F6100A7AAA5 /* InstructionsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsApp.swift; sourceTree = "<group>"; };
 		2A534CAF28230F6100A7AAA5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,6 +89,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A4C083E282AF04300878616 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2A4C0840282AF05000878616 /* Instruction.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		2A534CA128230F6100A7AAA5 = {
 			isa = PBXGroup;
 			children = (
@@ -111,8 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				2A534CAD28230F6100A7AAA5 /* InstructionsApp.swift */,
-				2AC44B62282449E500CEC213 /* RealityComposerARView.swift */,
-				2A534CDB2823190D00A7AAA5 /* ARViewManager.swift */,
+				2AA82A0B282C687300F01BEE /* AR */,
+				2A4C083E282AF04300878616 /* Models */,
 				2AC44B672825206F00CEC213 /* ViewModels */,
 				2AC44B662825206800CEC213 /* Views */,
 				2A534CB128230F6300A7AAA5 /* Assets.xcassets */,
@@ -145,6 +155,15 @@
 				2A534CCA28230F6300A7AAA5 /* InstructionsUITestsLaunchTests.swift */,
 			);
 			path = InstructionsUITests;
+			sourceTree = "<group>";
+		};
+		2AA82A0B282C687300F01BEE /* AR */ = {
+			isa = PBXGroup;
+			children = (
+				2AC44B62282449E500CEC213 /* RealityComposerARView.swift */,
+				2A534CDB2823190D00A7AAA5 /* ARViewManager.swift */,
+			);
+			path = AR;
 			sourceTree = "<group>";
 		};
 		2AC44B662825206800CEC213 /* Views */ = {
@@ -304,6 +323,7 @@
 				2A534CD828230F8400A7AAA5 /* MyScene.rcproject in Sources */,
 				2A0F5C9E2826AE2F00428E0C /* MarkerOverlayView.swift in Sources */,
 				2AC44B6528246A3100CEC213 /* ARViewModel.swift in Sources */,
+				2A4C0842282AF05000878616 /* Instruction.swift in Sources */,
 				2A534CB028230F6100A7AAA5 /* ContentView.swift in Sources */,
 				2ACA300E28294EB800D4DFFD /* InstructionCreationView.swift in Sources */,
 				2A534CAE28230F6100A7AAA5 /* InstructionsApp.swift in Sources */,

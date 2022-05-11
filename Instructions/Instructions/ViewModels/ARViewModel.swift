@@ -3,11 +3,12 @@ import RealityKit
 import SwiftUI
 
 class ARViewModel: NSObject, ObservableObject {
-    @Published public var editingMode = false
-    @Published var imageAnchorScreenPosition: CGPoint?
+    @Published var editingMode = false
+    @Published var imageAnchorViewPosition: CGPoint?
 
     let arView: ARViewManager
 
+    private(set) var instructions: [Instruction] = []
     private var imageAnchor: ARImageAnchor?
 
     override init() {
@@ -18,19 +19,30 @@ class ARViewModel: NSObject, ObservableObject {
 
     public func addMarker() {
         guard editingMode else { return }
-        arView.addMarker()
+        instructions.append(Instruction(title: "\(instructions.count)"))
+        arView.addMarker(for: instructions.last!)
         editingMode = false
+    }
+
+    private func updateInstructionsPositions() {
+        self.instructions.indices.forEach {
+            if let markerEntity = instructions[$0].markerEntity,
+               let updatedPoint = arView.project(markerEntity.position(relativeTo: nil))
+            {
+                instructions[$0].setMarkerScreenPosition(point: CGPoint(x: updatedPoint.x - 15, y: updatedPoint.y - 60))
+            }
+        }
     }
 }
 
 // MARK: - ARSessionDelegate
 
 extension ARViewModel: ARSessionDelegate {
-    /// Create AnchorEntity from each ARImageAnchor
+    /// Set rootAnchorEntity to ARImageAnchor 
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         anchors.compactMap { $0 as? ARImageAnchor }.forEach {
             imageAnchor = $0
-            arView.addRootEntity(for: $0)
+            arView.addRootAnchorEntity(for: $0)
         }
     }
     
@@ -42,10 +54,11 @@ extension ARViewModel: ARSessionDelegate {
         }
     }
 
-    /// updating image anchor position (CGPoint)
+    /// updating image anchor's and instructions' view positions
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         if let imageAnchor = imageAnchor {
-            self.imageAnchorScreenPosition =  arView.getImageAnchorPosition(of: imageAnchor)
+            self.imageAnchorViewPosition = arView.imageAnchorPosition(of: imageAnchor)
+            updateInstructionsPositions()
 //            print("anchor position: \(imageAnchorScreenPosition)")
         }
     }

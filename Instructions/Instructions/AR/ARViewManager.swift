@@ -4,8 +4,8 @@ import SwiftUI
 
 class ARViewManager: ARView {
     /// stores as children all entities added to the scene
-    private var rootEntity = AnchorEntity()
-    var imageAnchorToEntity: [ARAnchor: AnchorEntity] = [:]
+    private var rootAnchorEntity = AnchorEntity()
+    private var imageAnchorToEntity: [ARImageAnchor: AnchorEntity] = [:]
 
     internal required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
@@ -18,12 +18,12 @@ class ARViewManager: ARView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func addRootEntity(for imageAnchor: ARImageAnchor) {
-        self.scene.addAnchor(rootEntity)
-        self.imageAnchorToEntity[imageAnchor] = rootEntity
+    public func addRootAnchorEntity(for imageAnchor: ARImageAnchor) {
+        self.scene.addAnchor(rootAnchorEntity)
+        self.imageAnchorToEntity[imageAnchor] = rootAnchorEntity
     }
 
-    public func getImageAnchorPosition(of anchor: ARImageAnchor) -> CGPoint? {
+    public func imageAnchorPosition(of anchor: ARImageAnchor) -> CGPoint? {
         let translation = SIMD3<Float>(
             x: anchor.transform.columns.3.x,
             y: anchor.transform.columns.3.y,
@@ -43,7 +43,7 @@ class ARViewManager: ARView {
     }
 
     /// add new model entity to the scene (adding sphere in front of camera)
-    public func addMarker() {
+    public func addMarker(for instruction: Instruction) {
         let newEntity = ModelEntity(mesh: MeshResource.generateSphere(radius: 0.01))
         newEntity.name = "new entity"
         let cameraAnchor = AnchorEntity(.camera)
@@ -51,6 +51,7 @@ class ARViewManager: ARView {
         cameraAnchor.addChild(newEntity)
         newEntity.position.z = -0.25
         self.scene.addAnchor(cameraAnchor)
-        rootEntity.addChild(newEntity, preservingWorldTransform: true)
+        rootAnchorEntity.addChild(newEntity, preservingWorldTransform: true)
+        instruction.setMarkerEntity(newEntity)
     }
 }

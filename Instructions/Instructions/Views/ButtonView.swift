@@ -22,7 +22,7 @@ struct ButtonView: View {
 }
 
 
-struct ToggleButtonView: View {
+struct EditButtonView: View {
     @Binding var isEnable: Bool
     let imageNameTrue: String
     let imageNameFalse: String
