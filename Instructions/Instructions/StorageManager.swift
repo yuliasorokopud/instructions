@@ -38,23 +38,34 @@ public class StorageManager: ObservableObject {
         return uiImage
     }
 
-//    func getText() {
-//        let docref = database.document("scenes/example")
-//        docref.getDocument { snapshot, error in
-//            guard let data = snapshot?.data(),
-//                    error == nil,
-//                  let dataString = data["instructionsCount"] as? String
-//            else {
-//                return
-//            }
-//
-//            self.text = dataString
-//        }
-//    }
-//
-//    func uploadText(text: String = "striiing"){
-//        let docref = database.document("scenes/example")
-//        docref.setData(["instructionsCount" : "\(instructions.count)"])
-//        getText()
-//     }
+    func uploadEntityPosition(entityName: String, position: SIMD3<Float>){
+        let docref = database.document("scenes/\(entityName)")
+        docref.setData(["entityName" : entityName,
+                        "x" : position.x,
+                        "y" : position.y,
+                        "z" : position.z])
+     }
+
+    func getEntitiesPositions( completion: @escaping([MarkerEntity]) -> Void) {
+        var markerEnities: [MarkerEntity] = []
+        self.database.collection("scenes").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+                completion([])
+            } else {
+                for document in querySnapshot!.documents {
+                    let data = document.data()
+                    guard let entityName = data["entityName"] as? String,
+                          let x = data["x"] as? Float,
+                          let y = data["y"] as? Float,
+                          let z = data["z"] as? Float
+                    else {
+                        return
+                    }
+                    markerEnities.append(MarkerEntity(name: entityName, x: x, y: y, z: z))
+                }
+                completion(markerEnities)
+            }
+        }
+    }
 }

@@ -12,3 +12,10 @@ struct Instructionn: Identifiable {
     let title: String
     let description: String
 }
+
+struct MarkerEntity {
+    let name: String
+    let x: Float
+    let y: Float
+    let z: Float
+}

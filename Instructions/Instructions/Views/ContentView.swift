@@ -34,9 +34,9 @@ struct ContentView: View {
                 }
                 .sheet(isPresented: $showSheet) {
                     ImagePicker(image: $arViewModel.image, sourceType: $sourceType)
-                        .onDisappear {
-                            arViewModel.arView.addReferenceImage(for: arViewModel.image, name: "name", width: 8/100)
-                        }
+//                        .onDisappear {
+//                            arViewModel.arView.addReferenceImage(for: arViewModel.image, name: "name", width: 8/100)
+//                        }
                 }
             }
 
