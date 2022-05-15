@@ -7,6 +7,7 @@ class ARViewModel: NSObject, ObservableObject, UpdatesDelegate {
     @Published var editingMode = false
     @Published var imageAnchorViewPosition: CGPoint?
 
+    // temp
     @Published var text: String = ""
     @Published var image = UIImage(systemName: "circle")!
 
@@ -14,39 +15,57 @@ class ARViewModel: NSObject, ObservableObject, UpdatesDelegate {
 
     private(set) var instructions: [Instruction] = []
     private var imageAnchor: ARImageAnchor?
-
-    let database = Firestore.firestore()
-    let storage = StorageManager()
+    private let database = Firestore.firestore()
+    private let storage = StorageManager()
 
     override init() {
         self.arView = ARViewManager(frame: .zero)
         super.init()
-        uploadMedia(uiImage: UIImage(named: "qrImage")!, sceneName: "firstScene")
+
+        // TODO: - image from firebase
         arView.addReferenceImage(for: UIImage(named: "qrImage")!, name: "title", width: 8/100)
+        
         arView.session.delegate = self
         arView.updatesDelegate = self
+
+        getInstructions()
     }
 
-    func didAddNewMarker(named name: String, at position: SIMD3<Float>) {
-        storage.uploadEntityPosition(entityName: name, position: position)
+    public func addMarker() {
+        guard editingMode else { return }
+        let instruction = Instruction(title: "\(instructions.count)", description: "some descr")
+        instructions.append(instruction)
+        storage.uploadNewInstruction(instruction: instruction)
+        arView.addNewMarker(for: instructions.last!)
+        editingMode = false
     }
 
-    func getPositions() {
-        storage.getEntitiesPositions { entity in
-            self.arView.addMarkers(for: entity)
+    func didAddNewMarkerNamed(_ name: String, at position: SIMD3<Float>, instructionId instId: String) {
+        storage.uploadEntityPosition(entityName: name, position: position, instId: instId)
+    }
+
+    func getSavedEntitiesPositions() {
+        storage.retrieveEntitiesPositions {
+            self.arView.addMarkers(for: $0, instructions: self.instructions)
+        }
+    }
+
+    func clearScene() {
+        instructions.removeAll()
+        imageAnchorViewPosition = nil
+        arView.clear()
+        storage.clearScene()
+    }
+
+    func getInstructions() {
+        storage.retrieveInstructions { instructions in
+            self.instructions = instructions
         }
     }
     
     func uploadMedia(uiImage: UIImage, sceneName: String) {
         storage.uploadImage(image: uiImage, sceneNamePrefix: sceneName) { url in
         }
-    }
-
-    public func addMarker() {
-        guard editingMode else { return }
-        instructions.append(Instruction(title: "\(instructions.count)"))
-        arView.addNewMarker(for: instructions.last!)
-        editingMode = false
     }
 
     private func updateInstructionsPositions() {

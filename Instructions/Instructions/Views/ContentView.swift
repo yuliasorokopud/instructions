@@ -29,8 +29,9 @@ struct ContentView: View {
                     .resizable()
                     .frame(width: 50, height: 50)
 
-                ButtonView(imageName: "circle") {
-                    showSheet.toggle()
+                ButtonView(imageName: "trash") {
+//                    showSheet.toggle()
+                    arViewModel.clearScene()
                 }
                 .sheet(isPresented: $showSheet) {
                     ImagePicker(image: $arViewModel.image, sourceType: $sourceType)

@@ -4,16 +4,15 @@ import RealityKit
 import SwiftUI
 
 protocol UpdatesDelegate {
-    func didAddNewMarker(named name: String, at position: SIMD3<Float>)
-    func getPositions()
+    func didAddNewMarkerNamed(_ name: String, at position: SIMD3<Float>, instructionId: String)
+    func getSavedEntitiesPositions()
 }
 
 class ARViewManager: ARView {
     var updatesDelegate: UpdatesDelegate?
-    var count = 1 // temp
 
     /// stores as children all entities added to the scene
-    private var rootAnchorEntity = AnchorEntity()
+    private var rootAnchorEntity: AnchorEntity?
     private var imageAnchorToEntity: [ARImageAnchor: AnchorEntity] = [:]
     private var newReferenceImages: Set<ARReferenceImage> = []
     private let database = Firestore.firestore()
@@ -40,18 +39,13 @@ class ARViewManager: ARView {
     }
 
     public func addRootAnchorEntity(for imageAnchor: ARImageAnchor) {
+        rootAnchorEntity = AnchorEntity()
         let imageAnchorEntity = AnchorEntity(anchor: imageAnchor)
         self.scene.anchors.append(imageAnchorEntity)
-        self.scene.addAnchor(rootAnchorEntity)
+        self.scene.addAnchor(rootAnchorEntity!)
         self.imageAnchorToEntity[imageAnchor] = rootAnchorEntity
 
-        updatesDelegate?.getPositions()
-    }
-
-    public func addMarkers(for markerEntities: [MarkerEntity]){
-        markerEntities.forEach { entity in
-            addMarker(for: entity)
-        }
+        updatesDelegate?.getSavedEntitiesPositions()
     }
 
     public func imageAnchorPosition(of anchor: ARImageAnchor) -> CGPoint? {
@@ -68,6 +62,12 @@ class ARViewManager: ARView {
         return point
     }
 
+    func clear() {
+        rootAnchorEntity?.removeFromParent()
+        rootAnchorEntity = nil
+        session.run(ARWorldTrackingConfiguration(), options: [.removeExistingAnchors])
+    }
+
     public func updateEntityForImageAnchor(_ anchor: ARImageAnchor) {
         let anchorEntity = imageAnchorToEntity[anchor]
         anchorEntity?.transform.matrix = anchor.transform
@@ -75,22 +75,34 @@ class ARViewManager: ARView {
 
     /// add new model entity to the scene (adding sphere in front of camera)
     public func addNewMarker(for instruction: Instruction) {
-        let newEntity = generateModelEntity(withName: "new entity \(count)")
+        let newEntity = generateModelEntity(withName: "new entity \(instruction.title)")
         attachEntityToCameraAnchor(entity: newEntity)
-        rootAnchorEntity.addChild(newEntity, preservingWorldTransform: true)
+        rootAnchorEntity?.addChild(newEntity, preservingWorldTransform: true)
         instruction.setMarkerEntity(newEntity)
-        count += 1
 
-        updatesDelegate?.didAddNewMarker(named: newEntity.name, at: newEntity.position)
+        updatesDelegate?.didAddNewMarkerNamed(newEntity.name,
+                                              at: newEntity.position,
+                                              instructionId: instruction.id)
+        print("added with name \(newEntity.name)")
     }
 
-    public func addMarker(for markerEntity: MarkerEntity) {
-        let instruction = Instruction(title: "from firebase") // temp
+    /// add array of marker entities fetched from firebase
+    public func addMarkers(for markerEntities: [MarkerEntity], instructions: [Instruction]) {
+        markerEntities.forEach { entity in
+            guard let instr = instructions.first(where: { $0.id == entity.instructionId })
+            else { return }
+
+            addMarker(for: instr, markerEntity: entity)
+        }
+    }
+
+    /// add marker fetched from firebase
+    public func addMarker(for instruction: Instruction, markerEntity: MarkerEntity) {
         let newEntity =  generateModelEntity(withName: "firebase \(markerEntity.name)")
         newEntity.position = SIMD3<Float>(x: markerEntity.x, y: markerEntity.y, z: markerEntity.z)
-        rootAnchorEntity.addChild(newEntity)
+        rootAnchorEntity?.addChild(newEntity)
         instruction.setMarkerEntity(newEntity)
-        count += 1
+        print("added with name \(newEntity.name)")
     }
 
     private func attachEntityToCameraAnchor(entity: ModelEntity) {
@@ -108,7 +120,8 @@ class ARViewManager: ARView {
     }
 
     private func finalochkaEntity(for instruction: Instruction, entity: ModelEntity) {
-        rootAnchorEntity.addChild(entity, preservingWorldTransform: true)
+        rootAnchorEntity?.addChild(entity, preservingWorldTransform: true)
         instruction.setMarkerEntity(entity)
     }
+    
 }

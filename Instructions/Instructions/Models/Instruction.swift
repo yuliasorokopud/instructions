@@ -2,7 +2,7 @@ import RealityKit
 import SwiftUI
 
 class Instruction: Identifiable {
-    let id = UUID().uuidString
+    var id = UUID().uuidString
     var title: String
     var description: String?
     
@@ -10,8 +10,12 @@ class Instruction: Identifiable {
     var entityPosition: SIMD3<Float>?
     var markerViewPosition: CGPoint?
 
-    internal init(title: String) {
+    internal init(id: String? = nil, title: String, description: String? = nil) {
+        if let id = id {
+            self.id = id
+        }
         self.title = title
+        self.description = description
     }
 
     func updateInstructionPosition() {

@@ -139,9 +139,9 @@
 			children = (
 				2A534CAD28230F6100A7AAA5 /* InstructionsApp.swift */,
 				2A7F9B4828304B4200CCACA2 /* StorageManager.swift */,
+				2AC44B672825206F00CEC213 /* ViewModels */,
 				2AA82A0B282C687300F01BEE /* AR */,
 				2A4C083E282AF04300878616 /* Models */,
-				2AC44B672825206F00CEC213 /* ViewModels */,
 				2AC44B662825206800CEC213 /* Views */,
 				2A7F9B46283046A700CCACA2 /* ImagePicker.swift */,
 				2A534CB128230F6300A7AAA5 /* Assets.xcassets */,
