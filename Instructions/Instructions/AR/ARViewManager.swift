@@ -7,18 +7,32 @@ class ARViewManager: ARView {
     private var rootAnchorEntity = AnchorEntity()
     private var imageAnchorToEntity: [ARImageAnchor: AnchorEntity] = [:]
 
+    private var newReferenceImages: Set<ARReferenceImage> = []
+
     internal required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
-        // temporary image anchor
-        let imageAnchorEntity = AnchorEntity(.image(group: "AR Resources", name: "qrImage"))
-        self.scene.anchors.append(imageAnchorEntity)
     }
 
     @MainActor required dynamic init?(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    public func addReferenceImage(for image: UIImage, name: String, width: CGFloat) {
+        guard let cgImage = image.cgImage else { return }
+        let referenceImage = ARReferenceImage(cgImage, orientation: .up, physicalWidth: width)
+        referenceImage.name = name
+
+        self.newReferenceImages.removeAll()
+        self.newReferenceImages.insert(referenceImage)
+
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.detectionImages = self.newReferenceImages
+        self.session.run(configuration)
+    }
+
     public func addRootAnchorEntity(for imageAnchor: ARImageAnchor) {
+        let imageAnchorEntity = AnchorEntity(anchor: imageAnchor)
+        self.scene.anchors.append(imageAnchorEntity)
         self.scene.addAnchor(rootAnchorEntity)
         self.imageAnchorToEntity[imageAnchor] = rootAnchorEntity
     }
@@ -45,7 +59,7 @@ class ARViewManager: ARView {
     /// add new model entity to the scene (adding sphere in front of camera)
     public func addMarker(for instruction: Instruction) {
         let newEntity = ModelEntity(mesh: MeshResource.generateSphere(radius: 0.01))
-        newEntity.name = "new entity"
+        newEntity.name = "new entity \(count)"
         let cameraAnchor = AnchorEntity(.camera)
         cameraAnchor.name = "CameraAnchor"
         cameraAnchor.addChild(newEntity)
@@ -53,5 +67,10 @@ class ARViewManager: ARView {
         self.scene.addAnchor(cameraAnchor)
         rootAnchorEntity.addChild(newEntity, preservingWorldTransform: true)
         instruction.setMarkerEntity(newEntity)
+        count += 1
     }
+    var count = 1
 }
+
+
+//      po imageAnchorToEntity.first?.value.children[2]

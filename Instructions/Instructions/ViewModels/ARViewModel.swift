@@ -6,6 +6,9 @@ class ARViewModel: NSObject, ObservableObject {
     @Published var editingMode = false
     @Published var imageAnchorViewPosition: CGPoint?
 
+    @Published var text: String = ""
+    @Published var image = UIImage(systemName: "circle")!
+
     let arView: ARViewManager
 
     private(set) var instructions: [Instruction] = []
@@ -14,7 +17,14 @@ class ARViewModel: NSObject, ObservableObject {
     override init() {
         self.arView = ARViewManager(frame: .zero)
         super.init()
+        uploadMedia(uiImage: UIImage(named: "qrImage")!, sceneName: "firstScene")
         arView.session.delegate = self
+    }
+
+    func uploadMedia(uiImage: UIImage, sceneName: String) {
+        let sm = StorageManager()
+        sm.uploadImage(image: uiImage, sceneNamePrefix: sceneName) { url in
+        }
     }
 
     public func addMarker() {
@@ -29,7 +39,10 @@ class ARViewModel: NSObject, ObservableObject {
             if let markerEntity = instructions[$0].markerEntity,
                let updatedPoint = arView.project(markerEntity.position(relativeTo: nil))
             {
-                instructions[$0].setMarkerScreenPosition(point: CGPoint(x: updatedPoint.x - 15, y: updatedPoint.y - 60))
+                instructions[$0].setMarkerScreenPosition(point: CGPoint(x: updatedPoint.x - 15, y: updatedPoint.y - 60)
+                )
+//                print("entity position: \(updatedPoint)")
+//                print("marker entity position: \(markerEntity.position)")
             }
         }
     }
@@ -59,7 +72,7 @@ extension ARViewModel: ARSessionDelegate {
         if let imageAnchor = imageAnchor {
             self.imageAnchorViewPosition = arView.imageAnchorPosition(of: imageAnchor)
             updateInstructionsPositions()
-//            print("anchor position: \(imageAnchorScreenPosition)")
+//            print("anchor position: \(imageAnchorViewPosition)")
         }
     }
 }
