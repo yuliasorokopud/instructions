@@ -8,15 +8,16 @@ class ARViewModel: NSObject, ObservableObject, UpdatesDelegate {
     @Published var imageAnchorViewPosition: CGPoint?
 
     // temp
-    @Published var text: String = ""
     @Published var image = UIImage(systemName: "circle")!
 
     let arView: ARViewManager
 
-    private(set) var instructions: [Instruction] = []
-    private var imageAnchor: ARImageAnchor?
     private let database = Firestore.firestore()
     private let storage = StorageManager()
+
+    private(set) var instructions: [Instruction] = []
+    private var imageAnchor: ARImageAnchor?
+    private var temporaryInstruction: Instruction?
 
     override init() {
         self.arView = ARViewManager(frame: .zero)
@@ -31,9 +32,8 @@ class ARViewModel: NSObject, ObservableObject, UpdatesDelegate {
         getInstructions()
     }
 
-    public func addMarker() {
+    public func addMarker(for instruction: Instruction) {
         guard editingMode else { return }
-        let instruction = Instruction(title: "\(instructions.count)", description: "some descr")
         instructions.append(instruction)
         storage.uploadNewInstruction(instruction: instruction)
         arView.addNewMarker(for: instructions.last!)

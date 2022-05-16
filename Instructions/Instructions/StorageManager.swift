@@ -38,9 +38,11 @@ public class StorageManager: ObservableObject {
 
     func uploadNewInstruction(instruction: Instruction) {
         let docref = database.document("instructions/\(instruction.id)")
+
         docref.setData(["id" : instruction.id,
                         "title" : instruction.title,
-                        "description" : instruction.description!]) // TODO: handle optional
+                        "description" : instruction.description ?? "",
+                        "iconName" : instruction.iconName ?? ""])
     }
 
     // MARK: - retrieving data
@@ -86,11 +88,10 @@ public class StorageManager: ObservableObject {
                     guard let id = data["id"] as? String,
                           let title = data["title"] as? String,
                           let description = data["description"] as? String
-                    else {
-                        return
-                    }
+                    else { return }
+                    let iconName = data["iconName"] as? String
 
-                    instructions.append(Instruction(id: id, title: title, description: description))
+                    instructions.append(Instruction(id: id, title: title, description: description, iconName: iconName))
                 }
                 completion(instructions)
             }
