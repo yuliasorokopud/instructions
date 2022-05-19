@@ -3,14 +3,7 @@ import FirebaseFirestore
 import RealityKit
 import SwiftUI
 
-protocol UpdatesDelegate {
-    func didAddNewMarkerNamed(_ name: String, at position: SIMD3<Float>, instructionId: String)
-    func getSavedEntitiesPositions()
-}
-
 class ARViewManager: ARView {
-    var updatesDelegate: UpdatesDelegate?
-
     /// stores as children all entities added to the scene
     private var rootAnchorEntity: AnchorEntity?
     private var imageAnchorToEntity: [ARImageAnchor: AnchorEntity] = [:]
@@ -33,19 +26,23 @@ class ARViewManager: ARView {
         self.newReferenceImages.removeAll()
         self.newReferenceImages.insert(referenceImage)
 
+        configure()
+    }
+
+    func configure() {
         let configuration = ARWorldTrackingConfiguration()
         configuration.detectionImages = self.newReferenceImages
         self.session.run(configuration)
     }
 
-    public func addRootAnchorEntity(for imageAnchor: ARImageAnchor) {
+    public func addRootAnchorEntity(for imageAnchor: ARImageAnchor, completion: () -> Void) {
         rootAnchorEntity = AnchorEntity()
         let imageAnchorEntity = AnchorEntity(anchor: imageAnchor)
         self.scene.anchors.append(imageAnchorEntity)
         self.scene.addAnchor(rootAnchorEntity!)
         self.imageAnchorToEntity[imageAnchor] = rootAnchorEntity
 
-        updatesDelegate?.getSavedEntitiesPositions()
+        completion()
     }
 
     public func imageAnchorPosition(of anchor: ARImageAnchor) -> CGPoint? {
@@ -62,10 +59,14 @@ class ARViewManager: ARView {
         return point
     }
 
-    func clear() {
+    func quitScene() {
         rootAnchorEntity?.removeFromParent()
         rootAnchorEntity = nil
-        session.run(ARWorldTrackingConfiguration(), options: [.removeExistingAnchors])
+    }
+
+    func clearScene() {
+        rootAnchorEntity?.children.removeAll()
+        configure()
     }
 
     public func updateEntityForImageAnchor(_ anchor: ARImageAnchor) {
@@ -74,15 +75,12 @@ class ARViewManager: ARView {
     }
 
     /// add new model entity to the scene (adding sphere in front of camera)
-    public func addNewMarker(for instruction: Instruction) {
-        let newEntity = generateModelEntity(withName: "new entity \(instruction.title)")
+    public func addNewMarker(for instruction: Instruction, completion: () -> Void) {
+        let newEntity = generateModelEntity(withName: instruction.title)
         attachEntityToCameraAnchor(entity: newEntity)
         rootAnchorEntity?.addChild(newEntity, preservingWorldTransform: true)
         instruction.setMarkerEntity(newEntity)
-
-        updatesDelegate?.didAddNewMarkerNamed(newEntity.name,
-                                              at: newEntity.position,
-                                              instructionId: instruction.id)
+        completion()
         print("added with name \(newEntity.name)")
     }
 
@@ -98,11 +96,13 @@ class ARViewManager: ARView {
 
     /// add marker fetched from firebase
     public func addMarker(for instruction: Instruction, markerEntity: MarkerEntity) {
-        let newEntity =  generateModelEntity(withName: "firebase \(markerEntity.name)")
-        newEntity.position = SIMD3<Float>(x: markerEntity.x, y: markerEntity.y, z: markerEntity.z)
+        let newEntity =  generateModelEntity(withName: markerEntity.name)
+        newEntity.position = SIMD3<Float>(x: markerEntity.x,
+                                          y: markerEntity.y,
+                                          z: markerEntity.z)
         rootAnchorEntity?.addChild(newEntity)
         instruction.setMarkerEntity(newEntity)
-        print("added with name \(newEntity.name)")
+        print("added with name \(newEntity.name) from firebase")
     }
 
     private func attachEntityToCameraAnchor(entity: ModelEntity) {
@@ -114,14 +114,9 @@ class ARViewManager: ARView {
     }
 
     private func generateModelEntity(withName name: String) -> ModelEntity {
-        let newEntity = ModelEntity(mesh: MeshResource.generateSphere(radius: 0.01))
+        let occlusion = OcclusionMaterial()
+        let newEntity = ModelEntity(mesh: MeshResource.generateSphere(radius: 0.01), materials: [occlusion])
         newEntity.name = name
         return newEntity
     }
-
-    private func finalochkaEntity(for instruction: Instruction, entity: ModelEntity) {
-        rootAnchorEntity?.addChild(entity, preservingWorldTransform: true)
-        instruction.setMarkerEntity(entity)
-    }
-    
 }

@@ -2,10 +2,10 @@ import SwiftUI
 
 struct ARScene {
     let id = UUID().uuidString
+    let sceneName: String
     let anchorImage: UIImage
     let anchorImageWidth: Double
     let instructions: [Instruction]
-    let sceneName: String
 }
 
 struct MarkerEntity {

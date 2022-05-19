@@ -1,36 +1,38 @@
 import SwiftUI
 
 struct AddInstructionSheetView: View {
-    @Binding var title: String
-    @Binding var description: String
+    @Binding var instruction: Instruction
     @Binding var showSheet: Bool
-    @Binding var selectedIconName: String
-    @State var showAlert: Bool = false
+    @Binding var isAdding: Bool
+
     let action: () -> Void
+
+    @State var showAlert: Bool = false
 
     var body: some View {
         VStack(spacing: 20) {
-            CustomTextField(text: $title, title: "Instruction name")
-            CustomTextField(text: $description, title: "Description")
-            IconsRow(selectedIconName: $selectedIconName)
+            CustomTextField(text: $instruction.title, title: ViewConstants.instructionName)
+            CustomTextField(text: $instruction.description.toUnwrapped(defaultValue: ""), title: ViewConstants.instructionDescription)
+            IconsRow(selectedIconName: $instruction.iconName.toUnwrapped(defaultValue: ""))
 
             Button {
-                if !title.isBlank {
+                if !instruction.title.isBlank {
                     showSheet.toggle()
                     action()
+                    isAdding = true
                 } else {
                     showAlert.toggle()
                 }
             } label: {
-                Text("Add marker to scene")
+                Text(isAdding ? ViewConstants.addMarkerToSceneButton : ViewConstants.editInstruction)
                     .fontWeight(.medium)
                     .foregroundColor(.black)
             }
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding()
-            .background(Color("myGreen"))
+            .background(isAdding ? ViewConstants.myGreen : ViewConstants.myBlue)
             .cornerRadius(24)
-            .alert("Title should not be empty", isPresented: $showAlert) {
+            .alert(ViewConstants.alertMessageEmptyTitle, isPresented: $showAlert) {
                 Button("OK", role: .cancel) {
                     showAlert.toggle()
                 }
@@ -60,14 +62,13 @@ struct CustomTextField: View {
 
 struct IconsRow: View {
     @Binding var selectedIconName: String
-    let icons = ["sun.min", "pencil", "trash", "folder", "bookmark", "link", "bell", "gearshape", "paintbrush", "briefcase", "fork.knife", "lightbulb", "airplane", "flame", "heart"]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            DescribingText(title: "Icons")
-            ScrollView(.horizontal, showsIndicators: false){
+            DescribingText(title: ViewConstants.icons)
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(icons, id: \.self) {
+                    ForEach(ViewConstants.iconsArray, id: \.self) {
                         IconImage(isSelected: selectedIconName == $0 ? true : false,
                                   iconName: $0,
                                   selectedIconName: $selectedIconName)
@@ -105,4 +106,24 @@ struct IconImage: View {
             selectedIconName = iconName
         }
     }
+}
+
+struct ViewConstants {
+    // creation
+    static let alertMessageEmptyTitle = "Title should not be empty"
+    static let addInstruction = "Add instruction"
+    static let editInstruction = "Edit instruction"
+
+    static let instructionName = "Instruction name"
+    static let instructionDescription = "Description"
+    static let icons = "Icons"
+    static let iconsArray = ["sun.min", "pencil", "trash", "folder", "bookmark", "link", "bell", "gearshape", "paintbrush", "briefcase", "fork.knife", "lightbulb", "airplane", "flame", "heart"]
+
+    // adding to scene
+    static let addMarkerToSceneButton = "Add marker to scene"
+    static let placeMarker = "Place"
+
+    // colors
+    static let myGreen = Color("myGreen")
+    static let myBlue = Color("myBlue")
 }

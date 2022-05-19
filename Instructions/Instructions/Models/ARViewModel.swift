@@ -3,19 +3,16 @@ import FirebaseFirestore
 import RealityKit
 import SwiftUI
 
-class ARViewModel: NSObject, ObservableObject, UpdatesDelegate {
+class ARViewModel: NSObject, ObservableObject {
+    @Published private(set) var instructions: [Instruction] = []
     @Published var editingMode = false
     @Published var imageAnchorViewPosition: CGPoint?
-
-    // temp
-    @Published var image = UIImage(systemName: "circle")!
 
     let arView: ARViewManager
 
     private let database = Firestore.firestore()
     private let storage = StorageManager()
 
-    private(set) var instructions: [Instruction] = []
     private var imageAnchor: ARImageAnchor?
     private var temporaryInstruction: Instruction?
 
@@ -27,8 +24,6 @@ class ARViewModel: NSObject, ObservableObject, UpdatesDelegate {
         arView.addReferenceImage(for: UIImage(named: "qrImage")!, name: "title", width: 8/100)
         
         arView.session.delegate = self
-        arView.updatesDelegate = self
-
         getInstructions()
     }
 
@@ -36,12 +31,11 @@ class ARViewModel: NSObject, ObservableObject, UpdatesDelegate {
         guard editingMode else { return }
         instructions.append(instruction)
         storage.uploadNewInstruction(instruction: instruction)
-        arView.addNewMarker(for: instructions.last!)
+        arView.addNewMarker(for: instruction) {
+            guard let marker = instruction.markerEntity else { return }
+            storage.uploadEntity(marker, instId: instruction.id)
+        }
         editingMode = false
-    }
-
-    func didAddNewMarkerNamed(_ name: String, at position: SIMD3<Float>, instructionId instId: String) {
-        storage.uploadEntityPosition(entityName: name, position: position, instId: instId)
     }
 
     func getSavedEntitiesPositions() {
@@ -53,7 +47,7 @@ class ARViewModel: NSObject, ObservableObject, UpdatesDelegate {
     func clearScene() {
         instructions.removeAll()
         imageAnchorViewPosition = nil
-        arView.clear()
+        arView.clearScene()
         storage.clearScene()
     }
 
@@ -87,7 +81,9 @@ extension ARViewModel: ARSessionDelegate {
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         anchors.compactMap { $0 as? ARImageAnchor }.forEach {
             imageAnchor = $0
-            arView.addRootAnchorEntity(for: $0)
+            arView.addRootAnchorEntity(for: $0) {
+                getSavedEntitiesPositions()
+            }
         }
     }
     

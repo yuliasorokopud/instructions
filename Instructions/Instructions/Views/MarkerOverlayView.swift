@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct MarkerOverlayView: View {
-    var instruction: Instruction?
+    var position: CGPoint?
+    var title: String
+    var iconName: String?
 
     var body: some View {
-        if let position = instruction?.markerViewPosition {
-            Image(systemName: instruction?.iconName == nil ? "bell" : instruction!.iconName!)
+        if let position = position {
+            Image(systemName: iconName == nil ? "bell" : iconName!)
                 .font(.system(size: 30))
                 .clipShape(Circle())
                 .background(
@@ -17,9 +19,8 @@ struct MarkerOverlayView: View {
                 .position(position)
                 .padding()
                 .onTapGesture {
-                    print("InstructionView tapped with title: \(instruction?.title)")
+                    print("InstructionView tapped with number: \(title)")
                 }
         }
     }
-
 }

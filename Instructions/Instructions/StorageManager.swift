@@ -1,8 +1,9 @@
-import SwiftUI
 import FirebaseStorage
 import FirebaseFirestore
+import RealityKit
+import SwiftUI
 
-public class StorageManager: ObservableObject {
+public class StorageManager {
     private let storage = Storage.storage()
     private let database = Firestore.firestore()
 
@@ -27,13 +28,13 @@ public class StorageManager: ObservableObject {
         }
     }
 
-    public func uploadEntityPosition(entityName: String, position: SIMD3<Float>, instId: String) {
-        let docref = database.document("entities/\(entityName)")
+    public func uploadEntity(_ entity: Entity, instId: String) {
+        let docref = database.document("entities/\(instId)")
         docref.setData(["instuctionId": instId,
-                        "entityName" : entityName,
-                        "x" : position.x,
-                        "y" : position.y,
-                        "z" : position.z])
+                        "entityName" : entity.name,
+                        "x" : entity.position.x,
+                        "y" : entity.position.y,
+                        "z" : entity.position.z])
     }
 
     func uploadNewInstruction(instruction: Instruction) {
@@ -98,22 +99,21 @@ public class StorageManager: ObservableObject {
         }
     }
 
-    // TODO: fix
-    public func getImage(url: URL) -> UIImage? {
-        var uiImage: UIImage?
-        URLSession.shared.dataTask(with: url) { (data, _, _) in
-            if let data = data {
-                DispatchQueue.main.async {
-                    uiImage = UIImage(data: data)
-                }
+    func retrieveImage() {
+        var imageURL: URL?
+        let storageRef = Storage.storage().reference(withPath: "profile.jpg")
+        storageRef.downloadURL { (url, error) in
+            if error != nil {
+                print((error?.localizedDescription)!)
+                return
             }
-        }.resume()
-        return uiImage
+            imageURL = url!
+        }
     }
 
 
     // MARK: - deleting data
-    public func clearScene(){
+    public func clearScene() {
         deleteAllDocumentsInFirebaseCollectionNamed("entities")
         deleteAllDocumentsInFirebaseCollectionNamed("instructions")
     }

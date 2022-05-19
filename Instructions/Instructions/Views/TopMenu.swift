@@ -1,15 +1,14 @@
 import SwiftUI
 
 struct TopMenu: View {
-    @Binding var editingMode: Bool
     @Binding var showSheet: Bool
-
+    let backAction: () -> Void
     let trashAction: () -> Void
 
     var body: some View {
             HStack {
                 ButtonView(imageName: "chevron.left") {
-                    ()
+                    backAction()
                 }
 
                 Spacer()
@@ -22,6 +21,6 @@ struct TopMenu: View {
                 }
             }
             .padding(.top, 50)
-            .padding(.trailing, 20)
+            .padding(.horizontal, 20)
     }
 }
