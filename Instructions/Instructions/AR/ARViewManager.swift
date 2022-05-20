@@ -9,6 +9,7 @@ class ARViewManager: ARView {
     private var imageAnchorToEntity: [ARImageAnchor: AnchorEntity] = [:]
     private var newReferenceImages: Set<ARReferenceImage> = []
     private let database = Firestore.firestore()
+    private let configuration = ARWorldTrackingConfiguration()
 
     internal required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
@@ -30,9 +31,12 @@ class ARViewManager: ARView {
     }
 
     func configure() {
-        let configuration = ARWorldTrackingConfiguration()
         configuration.detectionImages = self.newReferenceImages
         self.session.run(configuration)
+    }
+
+    func reConfig() {
+        session.run(session.configuration ?? ARWorldTrackingConfiguration(), options: [.resetTracking])
     }
 
     public func addRootAnchorEntity(for imageAnchor: ARImageAnchor, completion: () -> Void) {

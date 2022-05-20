@@ -37,6 +37,11 @@ class ARViewModel: NSObject, ObservableObject {
         editingMode = false
     }
 
+    public func updateInstruction(_ instruction: Instruction) {
+        storage.uploadNewInstruction(instruction: instruction, toSceneWithId: scene.id)
+        editingMode = false
+    }
+
     func getSavedEntitiesPositions() {
         storage.retrieveEntitiesPositions {
             self.arView.addMarkers(for: $0, instructions: self.instructions)
@@ -106,5 +111,9 @@ extension ARViewModel: ARSessionDelegate {
             self.imageAnchorViewPosition = arView.imageAnchorPosition(of: imageAnchor)
             updateInstructionsPositions()
         }
+    }
+
+    func sessionInterruptionEnded(_ session: ARSession) {
+        arView.reConfig()
     }
 }

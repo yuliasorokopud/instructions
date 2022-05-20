@@ -2,9 +2,11 @@ import SwiftUI
 
 struct TopMenu: View {
     @Binding var showSheet: Bool
+    var title: String
     
     let backAction: () -> Void
     let trashAction: () -> Void
+    let addAction: () -> Void
 
     var body: some View {
             HStack {
@@ -13,7 +15,7 @@ struct TopMenu: View {
                 }
 
                 Spacer()
-                Text("first instruction")
+                Text(title)
                     .font(.system(size: 15, weight: .heavy))
                     .foregroundColor(.black)
                 Spacer()
@@ -21,7 +23,7 @@ struct TopMenu: View {
                     trashAction()
                 }
                 ButtonView(imageName: "plus") {
-                    showSheet.toggle()
+                    addAction()
                 }
             }
             .padding(.top, 50)

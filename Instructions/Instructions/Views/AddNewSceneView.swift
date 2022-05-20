@@ -3,7 +3,7 @@ import SwiftUI
 struct AddNewSceneView: View {
     @Binding var scene: ARScene
 
-    @State var showAlert = false
+    @State private var showAlert = false
 
     let action: () -> Void
     var body: some View {
@@ -30,9 +30,9 @@ struct AddNewSceneView: View {
             }
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding()
-            .background(ViewConstants.myBlue)
+            .background(Constants.myBlue)
             .cornerRadius(24)
-            .alert(ViewConstants.alertMessageEmptyTitle, isPresented: $showAlert) {
+            .alert(Constants.alertMessageEmptyTitle, isPresented: $showAlert) {
                 Button("OK", role: .cancel) {
                     showAlert.toggle()
                 }
@@ -46,8 +46,8 @@ struct AddNewSceneView: View {
 struct LibraryImage: View {
     @Binding var uiImage: UIImage?
 
-    @State var showAction: Bool = false
-    @State var showImagePicker: Bool = false
+    @State private var showAction: Bool = false
+    @State private var showImagePicker: Bool = false
 
     var sheet: ActionSheet {
         ActionSheet(

@@ -6,34 +6,44 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var scenesViewModel = ScenesViewModel()
 
-    @State var createSceneModelPresented: Bool = false
-    @State var currentScene: ARScene = ARScene(name: "",
+    @State private var createSceneModelPresented: Bool = false
+    @State private var currentScene: ARScene = ARScene(name: "",
                                                anchorImageWidth: "",
                                                instructions: [])
 
     var body: some View {
         NavigationView {
-            VStack {
-                List {
-                    ForEach(scenesViewModel.scenes) { scene in
-                        NavigationLink(destination: ARSceneView(arViewModel: ARViewModel(scene: scene))) {
-                            Text("\(scene.name)")
+            switch scenesViewModel.loadingState {
+            case .finished:
+                VStack {
+                    List {
+                        ForEach(scenesViewModel.scenes) { scene in
+                            NavigationLink(destination: ARInstructionsSceneView(arViewModel: ARViewModel(scene: scene))) {
+                                Text("\(scene.name)")
+                            }
+                        }
+                    }
+                    .hidden(scenesViewModel.scenes.isEmpty)
+                    Text("Create your first scene")
+                        .hidden(!scenesViewModel.scenes.isEmpty)
+                        .frame(alignment: .top)
+
+                }
+                .navigationBarTitle("Scenes")
+                . toolbar {
+                    ToolbarItemGroup (placement: .navigationBarTrailing) {
+                        Button(action: {
+                            createSceneModelPresented = true
+                        }) {
+                            Image(systemName: "plus")
                         }
                     }
                 }
-                .hidden(scenesViewModel.scenes.isEmpty)
-                Text("Create your first scene")
-                    .hidden(!scenesViewModel.scenes.isEmpty)
+            case .idle, .loadingStarted:
+                ZStack {
+                    BlurView(style: .light).opacity(0.8)
+                    ProgressView()
 
-            }
-            .navigationBarTitle("Scenes")
-            . toolbar {
-                ToolbarItemGroup (placement: .navigationBarTrailing) {
-                    Button(action: {
-                        createSceneModelPresented = true
-                    }) {
-                        Image(systemName: "plus")
-                    }
                 }
             }
 
