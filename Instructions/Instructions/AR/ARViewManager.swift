@@ -62,6 +62,7 @@ class ARViewManager: ARView {
     func quitScene() {
         rootAnchorEntity?.removeFromParent()
         rootAnchorEntity = nil
+        session.pause()
     }
 
     func clearScene() {

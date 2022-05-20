@@ -1,17 +1,19 @@
 import SwiftUI
 
-struct ARScene {
-    let id = UUID().uuidString
-    let sceneName: String
-    let anchorImage: UIImage
-    let anchorImageWidth: Double
-    let instructions: [Instruction]
-}
+class ARScene: Identifiable {
+    var id = UUID().uuidString
+    var name: String
+    var anchorImage: UIImage?
+    var anchorImageWidth: String
+    var anchorImageUrl: String?
+    var instructions: [Instruction]
 
-struct MarkerEntity {
-    let instructionId: String
-    let name: String
-    let x: Float
-    let y: Float
-    let z: Float
+    init(id: String = UUID().uuidString, name: String, anchorImage: UIImage? = nil, anchorImageWidth: String, anchorImageUrl: String? = nil, instructions: [Instruction]) {
+        self.id = id
+        self.name = name
+        self.anchorImage = anchorImage
+        self.anchorImageWidth = anchorImageWidth
+        self.anchorImageUrl = anchorImageUrl
+        self.instructions = instructions
+    }
 }

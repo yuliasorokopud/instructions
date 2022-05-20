@@ -9,6 +9,7 @@ class ARViewModel: NSObject, ObservableObject {
     @Published var imageAnchorViewPosition: CGPoint?
 
     let arView: ARViewManager
+    let scene: ARScene
 
     private let database = Firestore.firestore()
     private let storage = StorageManager()
@@ -16,21 +17,19 @@ class ARViewModel: NSObject, ObservableObject {
     private var imageAnchor: ARImageAnchor?
     private var temporaryInstruction: Instruction?
 
-    override init() {
+    init(scene: ARScene) {
         self.arView = ARViewManager(frame: .zero)
+        self.scene = scene
         super.init()
-
-        // TODO: - image from firebase
-        arView.addReferenceImage(for: UIImage(named: "qrImage")!, name: "title", width: 8/100)
-        
         arView.session.delegate = self
+        addImageReference(scene: scene)
         getInstructions()
     }
 
     public func addMarker(for instruction: Instruction) {
         guard editingMode else { return }
         instructions.append(instruction)
-        storage.uploadNewInstruction(instruction: instruction)
+        storage.uploadNewInstruction(instruction: instruction, toSceneWithId: scene.id)
         arView.addNewMarker(for: instruction) {
             guard let marker = instruction.markerEntity else { return }
             storage.uploadEntity(marker, instId: instruction.id)
@@ -51,15 +50,21 @@ class ARViewModel: NSObject, ObservableObject {
         storage.clearScene()
     }
 
+    func quitArSession() {
+        arView.quitScene()
+    }
+
     func getInstructions() {
-        storage.retrieveInstructions { instructions in
+        storage.retrieveInstructions(for: scene) { instructions in
             self.instructions = instructions
         }
     }
     
-    func uploadMedia(uiImage: UIImage, sceneName: String) {
-        storage.uploadImage(image: uiImage, sceneNamePrefix: sceneName) { url in
+    func addImageReference(scene: ARScene) {
+        guard let uiImage = scene.anchorImage else {
+            fatalError("failed to unwrap optional image")
         }
+        arView.addReferenceImage(for: uiImage, name: scene.name, width: CGFloat(Float(scene.anchorImageWidth)!)/100)
     }
 
     private func updateInstructionsPositions() {

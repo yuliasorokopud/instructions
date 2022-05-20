@@ -5,9 +5,9 @@ struct AddInstructionSheetView: View {
     @Binding var showSheet: Bool
     @Binding var isAdding: Bool
 
-    let action: () -> Void
-
     @State var showAlert: Bool = false
+
+    let action: () -> Void
 
     var body: some View {
         VStack(spacing: 20) {

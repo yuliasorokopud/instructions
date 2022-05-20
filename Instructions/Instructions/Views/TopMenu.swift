@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TopMenu: View {
     @Binding var showSheet: Bool
+    
     let backAction: () -> Void
     let trashAction: () -> Void
 
@@ -12,7 +13,10 @@ struct TopMenu: View {
                 }
 
                 Spacer()
-                Text("scene name")
+                Text("first instruction")
+                    .font(.system(size: 15, weight: .heavy))
+                    .foregroundColor(.black)
+                Spacer()
                 ButtonView(imageName: "trash") {
                     trashAction()
                 }

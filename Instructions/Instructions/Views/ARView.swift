@@ -7,26 +7,30 @@ import SwiftUI
 struct ARSceneView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
-    @StateObject var arViewModel = ARViewModel()
+    @StateObject var arViewModel: ARViewModel
 
     @State var instruction  = Instruction(title: "", description: "", iconName: "")
     @State var showSheet = false
     @State var isAdding = true
 
-    //    @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
-
     var body: some View {
 
         ZStack {
             ARViewContainer(arView: arViewModel.arView).edgesIgnoringSafeArea(.all)
-            TopMenu(showSheet: $showSheet,
-                    backAction: { presentationMode.wrappedValue.dismiss() },
-                    trashAction: { arViewModel.clearScene() }
+            TopMenu(
+                showSheet: $showSheet,
+                backAction: {
+                    presentationMode.wrappedValue.dismiss()
+                    arViewModel.quitArSession()
+                },
+                trashAction: {
+                    arViewModel.clearScene()
+
+                }
             )
             .hidden(arViewModel.editingMode)
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.top, 20)
-
 
             Image(uiImage: UIImage(systemName: "circle")!)
                 .resizable()
@@ -92,9 +96,20 @@ struct ARSceneView: View {
             //            .backgroundColor(.white)
             //            .contentInsets(EdgeInsets(top: 30, leading: 10, bottom: 30, trailing: 10))
         }
+//        .safeAreaInset(edge: .top) {
+//            TopMenu(showSheet: $showSheet,
+//                    backAction: {
+//                presentationMode.wrappedValue.dismiss()
+//                arViewModel.arView.quitScene()
+//            },
+//                    trashAction: { arViewModel.clearScene() }
+//            )
+//            .hidden(arViewModel.editingMode)
+//            .frame(maxHeight: .infinity, alignment: .top)
+////            .padding(.top, 20)
+//        }
         .navigationBarHidden(true)
 
-//        }
     }
 
     func refreshStates() {
@@ -112,20 +127,4 @@ struct ARViewContainer: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: ARView, context: Context) {}
-}
-
-
-struct NavigationBar: View {
-    var body: some View {
-        ZStack {
-            Color.clear.background(.ultraThinMaterial)
-                .blur(radius: 10)
-            Text ( "Featured")
-                .font(.largeTitle.weight(.bold))
-                .frame (maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 20)
-        }
-        frame(height: 70)
-            . frame (maxHeight: .infinity, alignment: .top)
-    }
 }
