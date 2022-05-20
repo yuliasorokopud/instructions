@@ -40,11 +40,7 @@ struct ContentView: View {
                     }
                 }
             case .idle, .loadingStarted:
-                ZStack {
-                    BlurView(style: .light).opacity(0.8)
-                    ProgressView()
-
-                }
+                LaunchView()
             }
 
         }

@@ -10,7 +10,7 @@ struct Constants {
     static let instructionName = "Instruction name"
     static let instructionDescription = "Description"
     static let icons = "Icons"
-    static let iconsArray = ["sun.min", "pencil", "trash", "folder", "bookmark", "link", "bell", "gearshape", "paintbrush", "briefcase", "fork.knife", "lightbulb", "airplane", "flame", "heart"]
+    static let iconsArray = ["sun.min", "pencil", "trash", "bookmark", "link", "bell", "gearshape", "paintbrush", "fork.knife", "lightbulb", "airplane", "flame", "heart"]
 
     // adding to scene
     static let addMarkerToSceneButton = "Add marker to scene"
@@ -19,4 +19,5 @@ struct Constants {
     // colors
     static let myGreen = Color("myGreen")
     static let myBlue = Color("myBlue")
+    static let myRed = Color("myRed")
 }

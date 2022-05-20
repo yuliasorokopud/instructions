@@ -5,9 +5,9 @@ import SwiftUI
 
 enum InstructionState {
     case none
+
     case isAdding
     case isEditing
-//    case isDeleting
 }
 
 struct ARInstructionsSceneView: View {
@@ -100,6 +100,9 @@ struct ARInstructionsSceneView: View {
                     case .isEditing:
                         arViewModel.updateInstruction(instruction)
                     }
+                } deleteAction: {
+                    arViewModel.deleteInstruction(instruction)
+                    refreshStates()
                 }
             }
             .height(.proportional(0.50))

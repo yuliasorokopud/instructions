@@ -11,8 +11,7 @@ class ARViewModel: NSObject, ObservableObject {
     let arView: ARViewManager
     let scene: ARScene
 
-    private let database = Firestore.firestore()
-    private let storage = StorageManager()
+    private let storageManager = StorageManager()
 
     private var imageAnchor: ARImageAnchor?
     private var temporaryInstruction: Instruction?
@@ -29,22 +28,29 @@ class ARViewModel: NSObject, ObservableObject {
     public func addMarker(for instruction: Instruction) {
         guard editingMode else { return }
         instructions.append(instruction)
-        storage.uploadNewInstruction(instruction: instruction, toSceneWithId: scene.id)
+        storageManager.uploadNewInstruction(instruction: instruction, toSceneWithId: scene.id)
         arView.addNewMarker(for: instruction) {
             guard let marker = instruction.markerEntity else { return }
-            storage.uploadEntity(marker, instId: instruction.id)
+            storageManager.uploadEntity(marker, instId: instruction.id)
         }
         editingMode = false
     }
 
     public func updateInstruction(_ instruction: Instruction) {
-        storage.uploadNewInstruction(instruction: instruction, toSceneWithId: scene.id)
+        storageManager.uploadNewInstruction(instruction: instruction, toSceneWithId: scene.id)
         editingMode = false
     }
 
     func getSavedEntitiesPositions() {
-        storage.retrieveEntitiesPositions {
+        storageManager.retrieveEntitiesPositions {
             self.arView.addMarkers(for: $0, instructions: self.instructions)
+        }
+    }
+
+    func deleteInstruction(_ instruction: Instruction) {
+        storageManager.deleteInstruction(instruction)
+        if let index = instructions.firstIndex(where: { $0.id == instruction.id }) {
+            instructions.remove(at: index)
         }
     }
 
@@ -52,7 +58,7 @@ class ARViewModel: NSObject, ObservableObject {
         instructions.removeAll()
         imageAnchorViewPosition = nil
         arView.clearScene()
-        storage.clearScene()
+        storageManager.deleteAllInstructionsOnTheScene(scene)
     }
 
     func quitArSession() {
@@ -60,7 +66,7 @@ class ARViewModel: NSObject, ObservableObject {
     }
 
     func getInstructions() {
-        storage.retrieveInstructions(for: scene) { instructions in
+        storageManager.retrieveInstructions(for: scene) { instructions in
             self.instructions = instructions
         }
     }

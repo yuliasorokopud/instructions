@@ -176,7 +176,7 @@ public class StorageManager {
     }
 
     // MARK: - deleting data
-    public func clearScene() {
+    public func clearAllScenes() {
         deleteAllDocumentsInFirebaseCollectionNamed("entities")
         deleteAllDocumentsInFirebaseCollectionNamed("instructions")
     }
@@ -191,5 +191,50 @@ public class StorageManager {
             }
           }
         }
+    }
+
+    func deleteInstruction(_ instruction: Instruction) {
+        let ref = database.collection("instructions")
+        let query : Query = ref.whereField("id", isEqualTo: instruction.id)
+        query.getDocuments(completion: { (snapshot, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                for document in snapshot!.documents {
+                    self.database.collection("instructions").document(document.documentID).delete()
+                }
+            }})
+
+        deleteEntityForInstructionWithId(instruction.id)
+    }
+
+    func deleteEntityForInstructionWithId(_ instructionId: String) {
+        let ref = database.collection("entities")
+        let query : Query = ref.whereField("instuctionId", isEqualTo: instructionId)
+        query.getDocuments(completion: { (snapshot, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                for document in snapshot!.documents {
+                    self.database.collection("entities").document(document.documentID).delete()
+                }
+            }})
+    }
+
+    func deleteAllInstructionsOnTheScene(_ scene: ARScene) {
+        let ref = database.collection("instructions")
+        let query : Query = ref.whereField("sceneId", isEqualTo: scene.id)
+        query.getDocuments(completion: { (snapshot, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                for document in snapshot!.documents {
+                    let data = document.data()
+                    if let id = data["id"] as? String {
+                        self.deleteEntityForInstructionWithId(id)
+                    }
+                    self.database.collection("instructions").document(document.documentID).delete()
+                }
+            }})
     }
 }

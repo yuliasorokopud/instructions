@@ -38,7 +38,7 @@
 		2ABD2C492837DAB600661D38 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABD2C482837DAB600661D38 /* CustomTextField.swift */; };
 		2ABD2C4B2837DAEA00661D38 /* IconsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABD2C4A2837DAEA00661D38 /* IconsView.swift */; };
 		2ABD2C4D2837DB1E00661D38 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABD2C4C2837DB1E00661D38 /* Constants.swift */; };
-		2AC44B63282449E500CEC213 /* RealityComposerARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B62282449E500CEC213 /* RealityComposerARView.swift */; };
+		2ABD2C4F283812D900661D38 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABD2C4E283812D900661D38 /* LaunchView.swift */; };
 		2AC44B6528246A3100CEC213 /* ARViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6428246A3100CEC213 /* ARViewModel.swift */; };
 		2AC44B6B282520A800CEC213 /* TopMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6A282520A800CEC213 /* TopMenu.swift */; };
 		2AC44B6D282520D800CEC213 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC44B6C282520D800CEC213 /* ButtonView.swift */; };
@@ -91,7 +91,7 @@
 		2ABD2C482837DAB600661D38 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		2ABD2C4A2837DAEA00661D38 /* IconsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconsView.swift; sourceTree = "<group>"; };
 		2ABD2C4C2837DB1E00661D38 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		2AC44B62282449E500CEC213 /* RealityComposerARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityComposerARView.swift; sourceTree = "<group>"; };
+		2ABD2C4E283812D900661D38 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		2AC44B6428246A3100CEC213 /* ARViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewModel.swift; sourceTree = "<group>"; };
 		2AC44B6A282520A800CEC213 /* TopMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopMenu.swift; sourceTree = "<group>"; };
 		2AC44B6C282520D800CEC213 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				2A534CAD28230F6100A7AAA5 /* InstructionsApp.swift */,
-				2A7F9B4828304B4200CCACA2 /* StorageManager.swift */,
+				2ABD2C52283815E900661D38 /* Networking */,
 				2AA82A0B282C687300F01BEE /* AR */,
 				2ABD2C3C28373FE800661D38 /* ViewModels */,
 				2A4C083E282AF04300878616 /* Models */,
@@ -204,7 +204,6 @@
 		2AA82A0B282C687300F01BEE /* AR */ = {
 			isa = PBXGroup;
 			children = (
-				2AC44B62282449E500CEC213 /* RealityComposerARView.swift */,
 				2A534CDB2823190D00A7AAA5 /* ARViewManager.swift */,
 			);
 			path = AR;
@@ -227,29 +226,54 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		2ABD2C452837DA2500661D38 /* Subviews */ = {
+		2ABD2C452837DA2500661D38 /* help views */ = {
 			isa = PBXGroup;
 			children = (
+				2ABD2C4C2837DB1E00661D38 /* Constants.swift */,
 				2ABD2C432837BCCA00661D38 /* BlurView.swift */,
-				2AC44B6A282520A800CEC213 /* TopMenu.swift */,
 				2AC44B6C282520D800CEC213 /* ButtonView.swift */,
-				2ABD2C462837DA8F00661D38 /* ImageRectangleStrokeView.swift */,
 				2ABD2C482837DAB600661D38 /* CustomTextField.swift */,
+				2ABD2C4E283812D900661D38 /* LaunchView.swift */,
+			);
+			path = "help views";
+			sourceTree = "<group>";
+		};
+		2ABD2C502838153700661D38 /* Ar Instuctions View */ = {
+			isa = PBXGroup;
+			children = (
+				2ABD2C512838158500661D38 /* Inctuctions Editing */,
+				2ABD2C362836648300661D38 /* ARInstructionsSceneView.swift */,
+				2A0F5C9D2826AE2F00428E0C /* EntityOverlayView.swift */,
+				2AC44B6A282520A800CEC213 /* TopMenu.swift */,
+				2ABD2C462837DA8F00661D38 /* ImageRectangleStrokeView.swift */,
+			);
+			path = "Ar Instuctions View";
+			sourceTree = "<group>";
+		};
+		2ABD2C512838158500661D38 /* Inctuctions Editing */ = {
+			isa = PBXGroup;
+			children = (
+				2A7F9B4A2831B00000CCACA2 /* AddInstructionSheetView.swift */,
 				2ABD2C4A2837DAEA00661D38 /* IconsView.swift */,
 			);
-			path = Subviews;
+			path = "Inctuctions Editing";
+			sourceTree = "<group>";
+		};
+		2ABD2C52283815E900661D38 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				2A7F9B4828304B4200CCACA2 /* StorageManager.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		2AC44B662825206800CEC213 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				2A534CAF28230F6100A7AAA5 /* ContentView.swift */,
-				2ABD2C362836648300661D38 /* ARInstructionsSceneView.swift */,
 				2ABD2C38283702CE00661D38 /* AddNewSceneView.swift */,
-				2A7F9B4A2831B00000CCACA2 /* AddInstructionSheetView.swift */,
-				2A0F5C9D2826AE2F00428E0C /* EntityOverlayView.swift */,
-				2ABD2C452837DA2500661D38 /* Subviews */,
-				2ABD2C4C2837DB1E00661D38 /* Constants.swift */,
+				2ABD2C502838153700661D38 /* Ar Instuctions View */,
+				2ABD2C452837DA2500661D38 /* help views */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -397,7 +421,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2ABD2C3528364B7C00661D38 /* Extensions.swift in Sources */,
-				2AC44B63282449E500CEC213 /* RealityComposerARView.swift in Sources */,
 				2A7F9B4B2831B00100CCACA2 /* AddInstructionSheetView.swift in Sources */,
 				2A534CDC2823190D00A7AAA5 /* ARViewManager.swift in Sources */,
 				2AC44B6D282520D800CEC213 /* ButtonView.swift in Sources */,
@@ -407,6 +430,7 @@
 				2AC44B6B282520A800CEC213 /* TopMenu.swift in Sources */,
 				2A534CD828230F8400A7AAA5 /* MyScene.rcproject in Sources */,
 				2A0F5C9E2826AE2F00428E0C /* EntityOverlayView.swift in Sources */,
+				2ABD2C4F283812D900661D38 /* LaunchView.swift in Sources */,
 				2ABD2C4B2837DAEA00661D38 /* IconsView.swift in Sources */,
 				2AC44B6528246A3100CEC213 /* ARViewModel.swift in Sources */,
 				2ABD2C492837DAB600661D38 /* CustomTextField.swift in Sources */,
