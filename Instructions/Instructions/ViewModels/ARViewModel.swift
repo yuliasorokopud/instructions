@@ -12,9 +12,7 @@ class ARViewModel: NSObject, ObservableObject {
     let scene: ARScene
 
     private let storageManager = StorageManager()
-
     private var imageAnchor: ARImageAnchor?
-    private var temporaryInstruction: Instruction?
 
     init(scene: ARScene) {
         self.arView = ARViewManager(frame: .zero)
@@ -84,8 +82,8 @@ class ARViewModel: NSObject, ObservableObject {
                   let updatedPoint = arView.project(markerEntity.position(relativeTo: nil))
             else { return }
             
-            instructions[$0].setMarkerScreenPosition(point: CGPoint(x: updatedPoint.x - 15, y: updatedPoint.y - 60)
-            )
+            instructions[$0].setMarkerScreenPosition(point: CGPoint(x: updatedPoint.x - 15,
+                                                                    y: updatedPoint.y - 60))
         }
     }
 }

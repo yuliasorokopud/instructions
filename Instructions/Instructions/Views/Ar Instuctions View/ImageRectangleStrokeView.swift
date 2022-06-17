@@ -13,7 +13,7 @@ struct ImageRectangleStrokeView: View {
                     .stroke(Color.yellow, lineWidth: 3)
                     .frame(width: 165, height: 165))
 
-            Text("Face your device on the tagret \nimage to show instructions")
+            Text(Constants.faceTheCamera)
                 .foregroundColor(.white)
                 .padding(.horizontal, 60)
 

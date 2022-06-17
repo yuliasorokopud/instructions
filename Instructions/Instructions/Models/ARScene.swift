@@ -8,7 +8,11 @@ class ARScene: Identifiable {
     var anchorImageUrl: String?
     var instructions: [Instruction]
 
-    init(id: String = UUID().uuidString, name: String, anchorImage: UIImage? = nil, anchorImageWidth: String, anchorImageUrl: String? = nil, instructions: [Instruction]) {
+    init(id: String = UUID().uuidString,
+         name: String, anchorImage: UIImage? = nil,
+         anchorImageWidth: String,
+         anchorImageUrl: String? = nil,
+         instructions: [Instruction]) {
         self.id = id
         self.name = name
         self.anchorImage = anchorImage

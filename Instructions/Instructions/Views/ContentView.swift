@@ -6,7 +6,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var scenesViewModel = ScenesViewModel()
 
-    @State private var createSceneModelPresented: Bool = false
+    @State private var createSceneModalPresented: Bool = false
     @State private var currentScene: ARScene = ARScene(name: "",
                                                anchorImageWidth: "",
                                                instructions: [])
@@ -33,7 +33,7 @@ struct ContentView: View {
                 . toolbar {
                     ToolbarItemGroup (placement: .navigationBarTrailing) {
                         Button(action: {
-                            createSceneModelPresented = true
+                            createSceneModalPresented = true
                         }) {
                             Image(systemName: "plus")
                         }
@@ -45,12 +45,12 @@ struct ContentView: View {
 
         }
 
-        .sheet(isPresented: $createSceneModelPresented,
+        .sheet(isPresented: $createSceneModalPresented,
                onDismiss: {
-            createSceneModelPresented = false
+            createSceneModalPresented = false
         }) {
             AddNewSceneView(scene: $currentScene) {
-                createSceneModelPresented.toggle()
+                createSceneModalPresented.toggle()
                 DispatchQueue.main.async {
                     scenesViewModel.uploadScene(scene: currentScene)
                     scenesViewModel.scenes.append(currentScene)

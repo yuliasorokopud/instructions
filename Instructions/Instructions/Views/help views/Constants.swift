@@ -4,6 +4,8 @@ struct Constants {
     // creation
     static let alertMessageEmptyTitle = "Title should not be empty"
     static let alertImageNotRecognized = "Image is not recognized yet"
+    static let faceTheCamera = "Face your device towards the tagret \nimage to show instructions"
+
     static let addInstruction = "Add instruction"
     static let editInstruction = "Edit instruction"
 

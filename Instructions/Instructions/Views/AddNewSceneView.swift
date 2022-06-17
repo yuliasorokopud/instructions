@@ -6,6 +6,7 @@ struct AddNewSceneView: View {
     @State private var showAlert = false
 
     let action: () -> Void
+    
     var body: some View {
         VStack(spacing: 30) {
             Text("Create Scene")

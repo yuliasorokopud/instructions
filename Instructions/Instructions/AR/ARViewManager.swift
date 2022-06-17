@@ -8,7 +8,6 @@ class ARViewManager: ARView {
     private var rootAnchorEntity: AnchorEntity?
     private var imageAnchorToEntity: [ARImageAnchor: AnchorEntity] = [:]
     private var newReferenceImages: Set<ARReferenceImage> = []
-    private let database = Firestore.firestore()
     private let configuration = ARWorldTrackingConfiguration()
 
     internal required init(frame frameRect: CGRect) {
@@ -56,11 +55,7 @@ class ARViewManager: ARView {
             z: anchor.transform.columns.3.z
         )
 
-        guard let point = self.project(translation) else {
-            return nil
-        }
-
-        return point
+        return self.project(translation)
     }
 
     func quitScene() {

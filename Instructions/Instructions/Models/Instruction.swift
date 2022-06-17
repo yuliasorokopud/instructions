@@ -11,7 +11,10 @@ class Instruction: Identifiable {
     var entityPosition: SIMD3<Float>?
     var markerViewPosition: CGPoint?
 
-    internal init(id: String? = nil, title: String, description: String? = nil, iconName: String? = nil) {
+    internal init(id: String? = nil,
+                  title: String,
+                  description: String? = nil,
+                  iconName: String? = nil) {
         if let id = id {
             self.id = id
         }

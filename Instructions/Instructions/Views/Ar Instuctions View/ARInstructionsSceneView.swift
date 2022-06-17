@@ -5,7 +5,6 @@ import SwiftUI
 
 enum InstructionState {
     case none
-
     case isAdding
     case isEditing
 }
